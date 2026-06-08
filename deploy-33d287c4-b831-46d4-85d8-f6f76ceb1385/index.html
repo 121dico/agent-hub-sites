@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>代码</title><style>body{margin:0;background:#1e1e1e;color:#d4d4d4;font:14px/1.6 ui-monospace,Menlo,Consolas,monospace}.bar{position:sticky;top:0;background:#252526;color:#9da5b4;padding:10px 16px;border-bottom:1px solid #333;font-size:13px}.code{margin:0;padding:16px;white-space:pre;overflow:auto}</style></head><body><div class="bar">代码  ·  python</div><pre class="code"><code>import random
+import time
+
+
+# ========== 方式一：使用标准库（实际项目推荐） ==========
+def demo_stdlib():
+    print(&#34;随机浮点 [0,1):&#34;, random.random())
+    print(&#34;随机整数 [1,100]:&#34;, random.randint(1, 100))
+    print(&#34;区间随机浮点:&#34;, random.uniform(1.5, 9.9))
+    print(&#34;列表随机选一个:&#34;, random.choice([&#34;苹果&#34;, &#34;香蕉&#34;, &#34;橙子&#34;]))
+    print(&#34;随机打乱列表:&#34;, random.sample(range(1, 11), 5))
+
+
+# ========== 方式二：从零实现（线性同余生成器 LCG） ==========
+class SimpleRandom:
+    &#34;&#34;&#34;线性同余随机数生成器（Linear Congruential Generator）。
+
+    公式: next = (a * seed + c) % m
+    参数采用 glibc 的常用取值。
+    &#34;&#34;&#34;
+
+    def __init__(self, seed=None):
+        # 不给种子就用当前时间，保证每次运行结果不同
+        self.state = seed if seed is not None else int(time.time() * 1000)
+        self.a = 1103515245
+        self.c = 12345
+        self.m = 2 ** 31
+
+    def next_int(self):
+        &#34;&#34;&#34;返回 [0, m) 范围内的随机整数。&#34;&#34;&#34;
+        self.state = (self.a * self.state + self.c) % self.m
+        return self.state
+
+    def random(self):
+        &#34;&#34;&#34;返回 [0, 1) 范围内的随机浮点数。&#34;&#34;&#34;
+        return self.next_int() / self.m
+
+    def randint(self, low, high):
+        &#34;&#34;&#34;返回 [low, high] 范围内的随机整数（含两端）。&#34;&#34;&#34;
+        return low + self.next_int() % (high - low + 1)
+
+
+if __name__ == &#34;__main__&#34;:
+    print(&#34;=== 标准库实现 ===&#34;)
+    demo_stdlib()
+
+    print(&#34;\n=== 自定义 LCG 实现 ===&#34;)
+    rng = SimpleRandom(seed=42)
+    print(&#34;5 个随机整数 [1,100]:&#34;, [rng.randint(1, 100) for _ in range(5)])
+    print(&#34;5 个随机浮点 [0,1):&#34;, [round(rng.random(), 4) for _ in range(5)])</code></pre></body></html>
