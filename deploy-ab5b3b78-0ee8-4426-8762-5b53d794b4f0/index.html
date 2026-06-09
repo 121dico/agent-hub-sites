@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>AgentHub 按钮</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 18px;
+      cursor: pointer;
+      border: none;
+      border-radius: 6px;
+      background-color: #2563eb;
+      color: white;
+    }
+
+    #text {
+      margin-top: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <button onclick="showAgentHub()">点击出现</button>
+
+  <div id="text">agenthub</div>
+
+  <script>
+    function showAgentHub() {
+      document.getElementById("text").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
